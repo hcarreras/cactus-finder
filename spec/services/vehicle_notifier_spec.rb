@@ -21,6 +21,10 @@ describe VehicleNotifier, type: :service do
       let(:coming_vehicles){ [new_vehicle, existing_vehicle] }
 
       it "saves the new vehicles" do
+        sms_sender_double = instance_double(SmsSender)
+        allow(SmsSender).to receive(:new).and_return(sms_sender_double)
+        allow(sms_sender_double).to receive(:send)
+
         service = VehicleNotifier.new(vehicles: coming_vehicles)
 
         expect{ service.execute }.to change{ Vehicle.count }.by(1)
