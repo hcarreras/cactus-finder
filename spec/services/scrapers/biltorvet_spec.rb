@@ -3,7 +3,9 @@ require 'rails_helper'
 describe Scrapers::Biltorvet, type: :service do
   describe "execute" do
     it "returns a list of vehicles" do
-      allow(URI).to receive(:open).and_return(File.open("#{Rails.root}/spec/fixtures/biltorvet.html"))
+      browser_double = double("browser", goto: true, button: double("button", click: true))
+      allow(browser_double).to receive(:html).and_return(File.open("#{Rails.root}/spec/fixtures/biltorvet.html"))
+      allow(Watir::Browser).to receive(:new).and_return(browser_double)
 
       result = Scrapers::Biltorvet.new.execute
 
@@ -14,7 +16,9 @@ describe Scrapers::Biltorvet, type: :service do
 
     it "calls the mapper" do
       mapper_double = instance_double(Scrapers::Biltorvet::Mapper)
-      allow(URI).to receive(:open).and_return(File.open("#{Rails.root}/spec/fixtures/biltorvet.html"))
+      browser_double = double("browser", goto: true, button: double("button", click: true))
+      allow(browser_double).to receive(:html).and_return(File.open("#{Rails.root}/spec/fixtures/biltorvet.html"))
+      allow(Watir::Browser).to receive(:new).and_return(browser_double)
       allow(Scrapers::Biltorvet::Mapper).to receive(:new).and_return(mapper_double)
       allow(mapper_double).to receive(:title)
       allow(mapper_double).to receive(:location)

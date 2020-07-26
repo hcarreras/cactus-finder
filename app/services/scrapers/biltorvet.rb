@@ -16,11 +16,16 @@ module Scrapers
 
     def doc
       @doc ||= begin
-        browser = Watir::Browser.new
         browser.goto SEARCH_PAGE
         browser.button(value: 'Accepter alle').click
         Nokogiri::HTML(browser.html)
       end
+    end
+
+    def browser
+      Watir::Browser.new(
+        :chrome,
+         args: %w[--headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222])
     end
 
     class Mapper
