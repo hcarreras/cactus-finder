@@ -32,6 +32,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
   gem 'factory_bot_rails'
+  # ENV variables
+  gem 'dotenv-rails'
 end
 
 group :development do
@@ -56,5 +58,3 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Send SMS
 gem 'twilio-ruby'
-# ENV variables
-gem 'dotenv-rails'
