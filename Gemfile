@@ -58,3 +58,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # Send SMS
 gem 'twilio-ruby'
+
+# background job
+gem 'sidekiq'
+gem 'redis'
