@@ -26,7 +26,16 @@ describe VehicleNotifier, type: :service do
         expect{ service.execute }.to change{ Vehicle.count }.by(1)
       end
 
-      it "sends a notification"
+      it "sends a notification" do
+        sms_sender_double = instance_double(SmsSender)
+        allow(SmsSender).to receive(:new).and_return(sms_sender_double)
+        allow(sms_sender_double).to receive(:send)
+
+        service = VehicleNotifier.new(vehicles: coming_vehicles)
+        service.execute
+
+        expect(sms_sender_double).to have_received(:send)
+      end
     end
 
     context "when the vehicles already exist" do
