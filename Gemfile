@@ -62,3 +62,6 @@ gem 'twilio-ruby'
 # background job
 gem 'sidekiq'
 gem 'redis'
+# browser
+gem 'watir'
+gem 'webdrivers', '~> 4.0'

@@ -1,3 +1,4 @@
+require 'watir'
 module Scrapers
   class Biltorvet
     SEARCH_PAGE = "https://www.biltorvet.dk/soeg/15342452"
@@ -14,7 +15,12 @@ module Scrapers
     end
 
     def doc
-      @doc ||= Nokogiri::HTML(URI.open(SEARCH_PAGE))
+      @doc ||= begin
+        browser = Watir::Browser.new
+        browser.goto SEARCH_PAGE
+        browser.button(value: 'Accepter alle').click
+        Nokogiri::HTML(browser.html)
+      end
     end
 
     class Mapper
