@@ -9,17 +9,18 @@ describe VehicleNotifier, type: :service do
           location: "Copenhagen",
           web_source: "bilbasen"
         }
-        persisted_vehicle = create(:vehicle, existing_vehicle_attributes)
-        existing_vehicle = build(:vehicle, existing_vehicle_attributes)
+        persisted_vehicle = create(:vehicle, **existing_vehicle_attributes)
+        existing_vehicle = build(:vehicle, **existing_vehicle_attributes)
         new_vehicle = build(:vehicle,
-          title: "Cactus C4",
-          location: "Copenhagen",
-          web_source: "bilbasen"),
+          title: "New Cactus C4",
+          location: "Aarhus",
+          web_source: "bilbasen")
+
         coming_vehicles = [new_vehicle, existing_vehicle]
 
         service = VehicleNotifier.new(vehicles: coming_vehicles)
 
-        expect(service.execute).to change{ Vehicle.count }.by(1)
+        expect{ service.execute }.to change{ Vehicle.count }.by(1)
       end
 
       it "sends a notification"
