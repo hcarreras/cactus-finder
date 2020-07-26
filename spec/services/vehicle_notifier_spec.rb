@@ -39,8 +39,30 @@ describe VehicleNotifier, type: :service do
     end
 
     context "when the vehicles already exist" do
-      it "does not save them"
-      it "does not send a notification"
+      let(:existing_vehicle_attributes) do
+        {
+          title: "Cactus C4",
+          location: "Copenhagen",
+          web_source: "bilbasen"
+        }
+      end
+      let!(:persisted_vehicle) { create(:vehicle, **existing_vehicle_attributes) }
+      let!(:existing_vehicle) { build(:vehicle, **existing_vehicle_attributes) }
+
+      it "does not save them" do
+        service = VehicleNotifier.new(vehicles: [existing_vehicle])
+
+        expect{ service.execute }.to change{ Vehicle.count }.by(0)
+      end
+
+      it "does not send a notification" do
+        allow(SmsSender).to receive(:new)
+
+        service = VehicleNotifier.new(vehicles: [existing_vehicle])
+        service.execute
+
+        expect(SmsSender).to_not have_received(:new)
+      end
     end
   end
 end

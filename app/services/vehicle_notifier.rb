@@ -6,7 +6,6 @@ class VehicleNotifier
   end
 
   def execute
-    vehicles.each(&:save)
-    SmsSender.new.send
+    SmsSender.new.send if vehicles.any?(&:save)
   end
 end
